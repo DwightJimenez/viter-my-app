@@ -35,7 +35,7 @@
     @apply overflow-x-hidden font-poppins text-black/80 text-base;
   }
   .container {
-    @apply max-w-7xl w-full mx-auto px-4;
+    @apply max-w-7xl w-full mx-auto;
   }
   h1 {
     @apply text-[clamp(2rem,_6vw,_3rem)] font-bold;
@@ -134,5 +134,12 @@
   form input,
   form textarea {
     @apply w-full px-4 py-3 border border-black/30 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-2 focus:outline-blue-500 mt-3 mb-6;
+  }
+  .page-container {
+    @apply flex flex-col min-h-screen;
+  }
+  .content-wrap {
+    /* @apply flex-1 */
+    flex: 1;
   }
 }

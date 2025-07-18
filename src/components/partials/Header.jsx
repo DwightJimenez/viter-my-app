@@ -4,7 +4,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className='bg-white shadow-md fixed w-full top-0 z-50'>
+    <header id="header" className='bg-white shadow-md relative w-full '>
       <div className='container mx-auto px-4 py-7 flex justify-between items-center'>
         {/* Logo */}
         <div className='flex items-center'>
@@ -68,16 +68,32 @@ const Header = () => {
       {/* Mobile Menu (now positioned absolutely) */}
       {isMenuOpen && (
         <div className='md:hidden bg-white absolute top-full left-0 right-0 shadow-lg px-4 py-2 space-y-2 border-t border-gray-200'>
-          <a onClick={()=> setIsMenuOpen(false)} href='#' className='block py-2 hover:text-blue-500'>
+          <a
+            onClick={() => setIsMenuOpen(false)}
+            href='#'
+            className='block py-2 hover:text-blue-500'
+          >
             Home
           </a>
-          <a onClick={()=> setIsMenuOpen(false)} href='#about' className='block py-2 hover:text-blue-500'>
+          <a
+            onClick={() => setIsMenuOpen(false)}
+            href='#about'
+            className='block py-2 hover:text-blue-500'
+          >
             About
           </a>
-          <a onClick={()=> setIsMenuOpen(false)} href='#services' className='block py-2 hover:text-blue-500'>
+          <a
+            onClick={() => setIsMenuOpen(false)}
+            href='#services'
+            className='block py-2 hover:text-blue-500'
+          >
             Services
           </a>
-          <a onClick={()=> setIsMenuOpen(false)} href='#contact' className='block py-2 hover:text-blue-500'>
+          <a
+            onClick={() => setIsMenuOpen(false)}
+            href='#contact'
+            className='block py-2 hover:text-blue-500'
+          >
             Contact
           </a>
         </div>

@@ -3,14 +3,14 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className='bg-black/90 pt-12'>
+      <footer id="footer" className='bg-black/90 pt-12'>
         <div className='container'>
           <div className='grid grid-cols-1 gap-8 border-b border-b-white/20 md:grid-cols-2 lg:grid-cols-4'>
             <div>
               <div className='flex items-center gap-2'>
                 <img
                   className='size-8'
-                  src='../images/apple-touch-icon.webp'
+                  src='/apple-touch-icon.webp'
                   alt="This blue circle image is represented as the website's logo"
                 />
                 <span className='text-xl font-black text-white'>MyApp</span>

@@ -104,16 +104,16 @@ const Contact = () => {
                 </li>
               </ul>
             </div>
-            <form className='bg-gray-50 rounded-xl p-8 h-fit md:w-1/2'>
-              <div>
+            <form className='bg-gray-50 rounded-xl p-8 h-fit md:w-1/2 space-y-8'>
+              <div className="relative">
                 <label>Full Name</label>
                 <input type='text' />
               </div>
-              <div>
+              <div className="relative">
                 <label>Email Address</label>
                 <input type='text' />
               </div>
-              <div>
+              <div className="relative">
                 <label>Message</label>
                 <textarea name='' id=''></textarea>
               </div>

@@ -53,6 +53,63 @@ function getQueriedData($query)
     $response->send();
     exit;
 }
+function checkEndpoint()
+{
+    $response = new Response();
+    $response->setSuccess(false);
+    $error = [];
+    $error['success'] = false;
+    $error['code'] = 404;
+    $error['error'] = 'endpoint not found';
+    $response->setData($error);
+    $response->send();
+    exit;
+}
+function invalidInput()
+{
+    $response = new Response();
+    $response->setSuccess(false);
+    $error = [];
+    $error['success'] = false;
+    $error['code'] = 404;
+    $error['error'] = 'invalid input';
+    $response->setData($error);
+    $response->send();
+    exit;
+}
+
+function checkPayload($jsonData)
+{
+    if (empty($jsonData) || $jsonData === null) {
+        invalidInput();
+    }
+}
+function checkIndex($jsonData, $index)
+{
+    if (!isset($jsonData[$index]) || $jsonData[$index] === '') {
+        invalidInput();
+    }
+    return trim($jsonData[$index]);
+}
+function returnSuccess($model, $name, $query, $data = '')
+{
+    $response = new Response();
+    $returnData = [];
+    $returnData['data'] = [$data];
+    $returnData['count'] = $query->rowCount();
+    $returnData['{$name} ID'] = $model->lastInsertedId;
+    $returnData['success'] = true;
+    $response->setData($returnData);
+    $response->send();
+    exit;
+}
+
+function checkCreate($models)
+{
+    $query = $models->create();
+    checkQuery($query, 'There someting wrong with models. (create)');
+    return $query;
+}
 
 function checkQuery($query, $msg)
 {

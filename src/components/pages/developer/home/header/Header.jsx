@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaPencil } from "react-icons/fa6";
+import { HiPencil } from "react-icons/hi";
 import ModalAddHeader from "./ModalAddHeader";
 
 const Header = () => {
@@ -35,9 +35,10 @@ const Header = () => {
             <button
               type='button'
               onClick={handleAdd}
-              className='bg-accent rounded-full rounded-full p-2 text-white text-lg'
+              className='tooltip'
+              data-tooltip='Add'
             >
-              <FaPencil />
+              <HiPencil className='bg-primary text-white size-6 p-1 border transition-all ease-in-out duration-200 rounded-full' />
             </button>
           </nav>
 
@@ -112,7 +113,7 @@ const Header = () => {
           </div>
         )}
       </header>
-      {/* {isModalHeader && <ModalAddHeader setIsModal={setIsModalHeader} />} */}
+      {isModalHeader && <ModalAddHeader setIsModal={setIsModalHeader} />}
     </>
   );
 };

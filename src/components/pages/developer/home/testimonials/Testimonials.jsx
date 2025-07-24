@@ -1,15 +1,47 @@
-import React from "react";
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
+import React, { useEffect } from "react";
+import {
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
+  HiPencil,
+} from "react-icons/hi";
+import ModalAddTestimonials from "./ModalAddTestimonials";
+import CardTestimonials from "../../../../partials/CardTestimonials";
+import useQueryData from "../../../../custom-hooks/useQueryData";
+import { apiVersion } from "../../../../helpers/function-general";
+import { string } from "yup";
 
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: dataTestimonials,
+  } = useQueryData(
+    `${apiVersion}/controllers/developer/testimonials/testimonials.php`,
+    "get",
+    "testimonials"
+  );
+  const [isModalTestimonials, setIsModalTestimonials] = React.useState(false);
+
+  const handleAdd = () => setIsModalTestimonials(true);
+  // const data = dataTestimonials.data || null;
+  // useEffect(() => {
+  //   console.log(data);
+  // }, []);
+
   return (
     <>
-      <section id="testimonials" className='py-16 bg-gray-50'>
+      <section id='testimonials' className='py-16 bg-gray-50'>
         <div className='container mx-auto px-4'>
-          <h2 className='text-3xl font-bold text-center mb-12'>
-            Client Testimonials
-          </h2>
+          <div className='flex items-center justify-center mb-12 gap-5'>
+            <h2 className='text-3xl font-bold text-center'>
+              Client Testimonials
+            </h2>
+            <button onClick={handleAdd}>
+              <HiPencil className='size-6 rounded-full p-1 bg-accent text-white' />
+            </button>
+          </div>
 
           {/* testimonial slider */}
           <div className='relative max-w-4xl mx-auto'>
@@ -19,8 +51,15 @@ const Testimonials = () => {
                 className='flex transition-transform duration-300 ease-in-out'
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
+                {dataTestimonials?.data.map((item, key) => {
+                  return (
+                    <React.Fragment key={key}>
+                      <CardTestimonials item={item} />
+                    </React.Fragment>
+                  );
+                })}
                 {/* testimonial 1 */}
-                <div className='w-full flex flex-shrink-0 px-4 py-1'>
+                {/* <div className='w-full flex flex-shrink-0 px-4 py-1'>
                   <div className='bg-white p-8 rounded-xl shadow-md text-center'>
                     <img
                       src='/images/testimonials-1.webp'
@@ -37,9 +76,9 @@ const Testimonials = () => {
                       Marketing Director, TechCorp
                     </p>
                   </div>
-                </div>
+                </div> */}
                 {/* testimonial 2 */}
-                <div className='w-full flex flex-shrink-0 px-4 py-1'>
+                {/* <div className='w-full flex flex-shrink-0 px-4 py-1'>
                   <div className='bg-white p-8 rounded-xl shadow-md text-center'>
                     <img
                       src='/images/testimonials-2.webp'
@@ -54,9 +93,9 @@ const Testimonials = () => {
                     <h4 className='font-bold'>Michael Chen</h4>
                     <p className='text-gray-500 text-sm'>CEO, StartupHub</p>
                   </div>
-                </div>
+                </div> */}
                 {/* testimonial 3 */}
-                <div className='w-full flex flex-shrink-0 px-4 py-1'>
+                {/* <div className='w-full flex flex-shrink-0 px-4 py-1'>
                   <div className='bg-white p-8 rounded-xl shadow-md text-center'>
                     <img
                       src='/images/testimonials-3.webp'
@@ -73,7 +112,7 @@ const Testimonials = () => {
                       CMO, GrowthSolutions
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -97,19 +136,22 @@ const Testimonials = () => {
 
             {/* dots indicator */}
             <div className='flex justify-center mt-6 space-x-2'>
-              {[0, 1, 2].map((index) => (
+              {dataTestimonials?.data.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-3 h-3 rounded-full ${
                     currentSlide === index ? "bg-blue-600" : "bg-gray-300"
                   }`}
-                />
+                >{console.log(index)}</button>
               ))}
             </div>
           </div>
         </div>
       </section>
+      {isModalTestimonials && (
+        <ModalAddTestimonials setIsModal={setIsModalTestimonials} />
+      )}
     </>
   );
 };

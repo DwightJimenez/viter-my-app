@@ -200,3 +200,14 @@
     @apply opacity-50 hover:bg-white hover:text-dark hover:border-gray-300;
   }
 }
+@layer utilities {
+  .tooltip {
+    @apply relative p-1 bg-transparent leading-none z-20;
+  }
+  .tooltip::after {
+    @apply content-[attr(data-tooltip)] absolute -translate-x-1/2 bottom-full -top-6 bg-dark/80 text-white p-1 rounded-sm h-fit leading-none z-20 text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/2;
+  }
+  .tooltip:hover::after {
+    @apply opacity-100 scale-100;
+  }
+}

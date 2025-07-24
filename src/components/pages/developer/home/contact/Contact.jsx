@@ -107,15 +107,15 @@ const Contact = () => {
             <form className='bg-gray-50 rounded-xl p-8 h-fit md:w-1/2 space-y-8'>
               <div className="relative">
                 <label>Full Name</label>
-                <input type='text' />
+                <input type='text' className="rounded-md border" />
               </div>
               <div className="relative">
                 <label>Email Address</label>
-                <input type='text' />
+                <input type='text' className="rounded-md border" />
               </div>
               <div className="relative">
                 <label>Message</label>
-                <textarea name='' id=''></textarea>
+                <textarea name='' id='' className="rounded-md border"></textarea>
               </div>
               <button className='btn btn--blue w-full'>Send Message</button>
             </form>

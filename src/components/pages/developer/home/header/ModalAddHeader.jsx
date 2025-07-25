@@ -8,18 +8,21 @@ import { queryData } from "../../../../custom-hooks/queryData";
 import * as Yup from "yup";
 import { apiVersion } from "../../../../helpers/function-general";
 
-const ModalAddHeader = ({ setIsModal }) => {
+const ModalAddHeader = ({ setIsModal, headerEdit }) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        `${apiVersion}/controllers/developer/header/header.php`,
-        "post",
+        headerEdit
+          ? `${apiVersion}/controllers/developer/header/header.php?id=${headerEdit.header_aid}`
+          : `${apiVersion}/controllers/developer/header/header.php`,
+        headerEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["header"] });
       if (data.success) {
         alert("Successfully Created.");
       } else {
@@ -29,6 +32,7 @@ const ModalAddHeader = ({ setIsModal }) => {
   });
 
   const handleClose = () => {
+    if (mutation.isPending) return;
     setAnimate("translate-x-full");
     setTimeout(() => {
       setIsModal(false);
@@ -36,8 +40,8 @@ const ModalAddHeader = ({ setIsModal }) => {
   };
 
   const initVal = {
-    header_name: "",
-    header_link: "",
+    header_name: headerEdit ? headerEdit.header_name : "",
+    header_link: headerEdit ? headerEdit.header_link : "",
   };
 
   const yupSchema = Yup.object({
@@ -52,7 +56,10 @@ const ModalAddHeader = ({ setIsModal }) => {
     <>
       <ModalWrapper className={`${animate}`} handleClose={handleClose}>
         <div className='modal_header relative mb-4'>
-          <h3 className='text-sm font-normal'>Add Header</h3>
+          <h3 className='text-sm font-normal'>
+            {" "}
+            {headerEdit ? "Edit" : "Add"} Header
+          </h3>
           <button
             className='absolute top-0.5 right-0 '
             type='button'
@@ -87,7 +94,11 @@ const ModalAddHeader = ({ setIsModal }) => {
                       className='btn-modal-submit'
                       disabled={mutation.isPending}
                     >
-                      {mutation.isPending ? "Loading..." : "Add"}
+                      {mutation.isPending
+                        ? "Loading..."
+                        : headerEdit
+                        ? "Save"
+                        : "Add"}
                     </button>
                     <button
                       type='reset'

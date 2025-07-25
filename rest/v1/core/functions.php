@@ -110,6 +110,12 @@ function checkCreate($models)
     checkQuery($query, 'There someting wrong with models. (create)');
     return $query;
 }
+function checkUpdate($models)
+{
+    $query = $models->update();
+    checkQuery($query, 'There someting wrong with models. (update)');
+    return $query;
+}
 
 function checkQuery($query, $msg)
 {

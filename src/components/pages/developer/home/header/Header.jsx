@@ -1,11 +1,33 @@
 import { useState } from "react";
 import { HiPencil } from "react-icons/hi";
 import ModalAddHeader from "./ModalAddHeader";
+import useQueryData from "../../../../custom-hooks/useQueryData";
+import { apiVersion } from "../../../../helpers/function-general";
+import { FaPencil } from "react-icons/fa6";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalHeader, setIsModalHeader] = useState(false);
-  const handleAdd = () => setIsModalHeader(true);
+  const [headerEdit, setHeaderEdit] = useState();
+  const handleAdd = () => {
+    setIsModalHeader(true);
+    setHeaderEdit(null);
+  };
+  const handeEdit = (item) => {
+    setHeaderEdit(item);
+    setIsModalHeader(true);
+  };
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: dataHeader,
+  } = useQueryData(
+    `${apiVersion}/controllers/developer/header/header.php`,
+    "get",
+    "header"
+  );
 
   return (
     <>
@@ -19,10 +41,20 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className='hidden md:flex space-x-6 items-center'>
-            <a href='#' className='hover:text-blue-500'>
-              Home
-            </a>
-            <a href='#about' className='hover:text-blue-500'>
+            {dataHeader?.data.map((item, key) => {
+              return (
+                <a
+                  href={item.header_link}
+                  className='hover:text-blue-500'
+                  onClick={() => handeEdit(item)}
+                  key={key}
+                >
+                  {item.header_name}
+                </a>
+              );
+            })}
+
+            {/* <a href='#about' className='hover:text-blue-500'>
               About
             </a>
             <a href='#services' className='hover:text-blue-500'>
@@ -30,7 +62,7 @@ const Header = () => {
             </a>
             <a href='#contact' className='hover:text-blue-500'>
               Contact
-            </a>
+            </a> */}
 
             <button
               type='button'
@@ -113,7 +145,9 @@ const Header = () => {
           </div>
         )}
       </header>
-      {isModalHeader && <ModalAddHeader setIsModal={setIsModalHeader} />}
+      {isModalHeader && (
+        <ModalAddHeader setIsModal={setIsModalHeader} headerEdit={headerEdit} />
+      )}
     </>
   );
 };

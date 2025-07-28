@@ -8,19 +8,21 @@ import { queryData } from "../../../../custom-hooks/queryData";
 import * as Yup from "yup";
 import { apiVersion } from "../../../../helpers/function-general";
 
-const ModalAddTestimonials = ({ setIsModal }) => {
+const ModalAddTestimonials = ({ setIsModal, itemEdit }) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        `${apiVersion}/controllers/developer/testimonials/testimonials.php`,
-        "post",
+        itemEdit
+          ? `${apiVersion}/controllers/developer/testimonials/testimonials.php?id=${itemEdit.testimonial_aid}`
+          : `${apiVersion}/controllers/developer/testimonials/testimonials.php`,
+        itemEdit ? "put" : "post",
         values
       ),
     onSuccess: () => {
       //validate reading
-      queryClient.invalidateQueries(""); //give id for refetching data
+      queryClient.invalidateQueries({ queryKey: ["testimonials"] }); //give id for refetching data
       if (!data.success) {
         window.prompt(data.error);
       } else {
@@ -39,10 +41,10 @@ const ModalAddTestimonials = ({ setIsModal }) => {
   };
 
   const initVal = {
-    testimonial_name: "",
-    testimonial_description: "",
-    testimonial_image: "",
-    testimonial_position: "",
+    testimonial_name: itemEdit ? itemEdit.testimonial_name : "",
+    testimonial_description: itemEdit ? itemEdit.testimonial_description : "",
+    testimonial_image: itemEdit ? itemEdit.testimonial_image : "",
+    testimonial_position: itemEdit ? itemEdit.testimonial_position : "",
   };
 
   const yupSchema = Yup.object({

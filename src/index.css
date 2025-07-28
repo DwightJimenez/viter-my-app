@@ -89,6 +89,21 @@
   span.error-show {
     @apply text-xs text-red-600 w-full absolute -bottom-3.5 right-0 w-fit;
   }
+  table {
+    @apply border-collapse border-spacing-2 text-left w-full table-auto;
+  }
+  table tr:hover {
+    @apply bg-gray-100;
+  }
+  table tr {
+    @apply border-b border-solid rounded-t-md border-gray-300;
+  }
+  table th {
+    @apply font-bold bg-gray-200 py-1 pr-3 capitalize text-sm;
+  }
+  table td {
+    @apply py-2 pr-3 text-xs;
+  }
 }
 @layer components {
   /* MAKE LAST BACKDROP TO SHOW BG OVERLAY */

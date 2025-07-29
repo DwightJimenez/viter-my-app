@@ -14,6 +14,7 @@ const Testimonials = () => {
   const [itemEdit, setItemEdit] = React.useState();
   const [isModalTestimonials, setIsModalTestimonials] = React.useState(false);
   const [isDeleteTestimonials, setIsDeleteTestimonials] = React.useState(false);
+  const [dataTestimonialsCount, setDataTestimonialsCount] = React.useState(0);
 
   const handleAdd = () => {
     setIsModalTestimonials(true);
@@ -43,6 +44,9 @@ const Testimonials = () => {
     "get",
     "testimonials"
   );
+  React.useEffect(() => {
+    setDataTestimonialsCount(dataTestimonials?.count);
+  }, [dataTestimonials?.count]);
 
   return (
     <>
@@ -112,6 +116,9 @@ const Testimonials = () => {
           setIsModal={setIsModalTestimonials}
           itemEdit={itemEdit}
           setIsModalTestimonials={setIsModalTestimonials}
+          dataTestimonialsCount={dataTestimonialsCount}
+          currentSlide={currentSlide}
+          setCurrentSlide={setCurrentSlide}
         />
       )}
 
@@ -122,6 +129,7 @@ const Testimonials = () => {
           queryKey='testimonials'
           setCurrentSlide={setCurrentSlide}
           currentSlide={currentSlide}
+          dataTestimonialsCount={dataTestimonialsCount}
         />
       )}
     </>

@@ -8,7 +8,14 @@ import { queryData } from "../../../../custom-hooks/queryData";
 import * as Yup from "yup";
 import { apiVersion } from "../../../../helpers/function-general";
 
-const ModalAddTestimonials = ({ setIsModal, itemEdit, setIsModalTestimonials }) => {
+const ModalAddTestimonials = ({
+  setIsModal,
+  itemEdit,
+  setIsModalTestimonials,
+  currentSlide,
+  setCurrentSlide,
+  dataTestimonialsCount,
+}) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -76,6 +83,9 @@ const ModalAddTestimonials = ({ setIsModal, itemEdit, setIsModalTestimonials }) 
             validationSchema={yupSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               console.log(values);
+              if (currentSlide + 1 === dataTestimonialsCount) {
+                setCurrentSlide(currentSlide + 1);
+              }
               mutation.mutate(values);
               setIsModalTestimonials(false);
             }}

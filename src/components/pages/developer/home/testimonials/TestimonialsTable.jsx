@@ -18,15 +18,17 @@ const TestimonialsTable = ({
     <>
       <table>
         <thead>
-          <th>#</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Action</th>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
           {dataTestimonials?.data.map((item, index) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{item.testimonial_name}</td>
                 <td>{item.testimonial_description}</td>

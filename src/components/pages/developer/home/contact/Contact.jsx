@@ -1,11 +1,57 @@
 import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import { InputText, InputTextArea } from "../../../../helpers/FormInput";
+import { apiVersion } from "../../../../helpers/function-general";
+import { queryData } from "../../../../custom-hooks/queryData";
+import { FaList, FaTable } from "react-icons/fa";
+import useQueryData from "../../../../custom-hooks/useQueryData";
+import ContactTable from "./ContactTable";
+import ContactList from "./ContactList";
 
 const Contact = () => {
+  const [isTable, setIsTable] = React.useState(false);
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: dataContact,
+  } = useQueryData(
+    `${apiVersion}/controllers/developer/contact/contact.php`,
+    "get",
+    "contact"
+  );
+
+  const handleToggleTable = () => {
+    setIsTable(!isTable);
+  };
+
   return (
     <>
       <section id='contact' className='bg-white py-12 md:py-20'>
-        <div className='container'>
+        <div className='container relative'>
           <h2 className='title text-center'>Get In Touch</h2>
+          <div className='absolute right-0 top-0'>
+            <button
+              className='flex items-center gap-2 hover:underline hover:text-primary'
+              type='button'
+              onClick={handleToggleTable}
+            >
+              {isTable ? (
+                <>
+                  <FaList className='size-3' />
+                  List
+                </>
+              ) : (
+                <>
+                  <FaTable className='size-3' />
+                  Table
+                </>
+              )}
+            </button>
+          </div>
           <div className='flex flex-col gap-10 mt-12 md:flex-row'>
             <div className='bg-gray-50 rounded-xl p-8 h-fit md:w-1/2'>
               <h5>Our Office</h5>
@@ -104,21 +150,11 @@ const Contact = () => {
                 </li>
               </ul>
             </div>
-            <form className='bg-gray-50 rounded-xl p-8 h-fit md:w-1/2 space-y-8'>
-              <div className="relative">
-                <label>Full Name</label>
-                <input type='text' className="rounded-md border" />
-              </div>
-              <div className="relative">
-                <label>Email Address</label>
-                <input type='text' className="rounded-md border" />
-              </div>
-              <div className="relative">
-                <label>Message</label>
-                <textarea name='' id='' className="rounded-md border"></textarea>
-              </div>
-              <button className='btn btn--blue w-full'>Send Message</button>
-            </form>
+            {isTable ? (
+              <ContactTable dataContact={dataContact} />
+            ) : (
+              <ContactList />
+            )}
           </div>
         </div>
       </section>

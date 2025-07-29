@@ -2,33 +2,27 @@ import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 
-const ServicesTable = ({
-  isLoading,
-  isFetching,
-  error,
-  dataServices,
-  handleAdd,
-  handleEdit,
-  handleDelete,
-}) => {
+const ContactTable = ({ dataContact }) => {
   return (
     <>
-      <table>
+      <table className='h-fit'>
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th>Fullname</th>
+            <th>Email</th>
+            <th>Message</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {dataServices?.data.map((item, index) => {
+          {dataContact?.data.map((item, index) => {
             return (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{item.web_services_name}</td>
-                <td>{item.web_services_description}</td>
+                <td>{item.contact_fullname}</td>
+                <td>{item.contact_email}</td>
+                <td>{item.contact_message}</td>
                 <td>
                   <div className='flex items-center justify-end mr-5'>
                     <button
@@ -58,4 +52,4 @@ const ServicesTable = ({
   );
 };
 
-export default ServicesTable;
+export default ContactTable;

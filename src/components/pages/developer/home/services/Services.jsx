@@ -110,7 +110,7 @@ const Services = () => {
       </section>
 
       {isModalServices && (
-        <ModalAddServices setIsModal={setIsModalServices} itemEdit={itemEdit} />
+        <ModalAddServices setIsModal={setIsModalServices} itemEdit={itemEdit} setIsModalServices={setIsModalServices}/>
       )}
       {isDeleteServices && (
         <ModalDeleteServices

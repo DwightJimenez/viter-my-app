@@ -8,7 +8,7 @@ import { queryData } from "../../../../custom-hooks/queryData";
 import * as Yup from "yup";
 import { apiVersion } from "../../../../helpers/function-general";
 
-const ModalAddTestimonials = ({ setIsModal, itemEdit }) => {
+const ModalAddTestimonials = ({ setIsModal, itemEdit, setIsModalTestimonials }) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -59,7 +59,9 @@ const ModalAddTestimonials = ({ setIsModal, itemEdit }) => {
       {" "}
       <ModalWrapper className={`${animate}`} handleClose={handleClose}>
         <div className='modal_header relative mb-4'>
-          <h3 className='text-sm font-normal'>Add Testimonial</h3>
+          <h3 className='text-sm font-normal'>
+            {itemEdit ? "Edit" : "Add"} Testimonial
+          </h3>
           <button
             className='absolute top-0.5 right-0 '
             type='button'
@@ -75,6 +77,7 @@ const ModalAddTestimonials = ({ setIsModal, itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               console.log(values);
               mutation.mutate(values);
+              setIsModalTestimonials(false);
             }}
           >
             {(props) => {
@@ -120,7 +123,11 @@ const ModalAddTestimonials = ({ setIsModal, itemEdit }) => {
                       className='btn-modal-submit'
                       disabled={mutation.isPending}
                     >
-                      {mutation.isPending ? "Loading..." : "Add"}
+                      {mutation.isPending
+                        ? "Loading..."
+                        : itemEdit
+                        ? "Save"
+                        : "Add"}
                     </button>
                     <button
                       type='reset'

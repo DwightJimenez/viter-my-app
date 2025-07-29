@@ -1,5 +1,5 @@
 import React from "react";
-import { FaList, FaTable } from "react-icons/fa";
+import { FaList, FaPlus, FaTable } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi";
 import useQueryData from "../../../../custom-hooks/useQueryData";
 import { apiVersion } from "../../../../helpers/function-general";
@@ -48,30 +48,39 @@ const Testimonials = () => {
     <>
       <section id='testimonials' className='py-16 bg-gray-50'>
         <div className='container mx-auto px-4'>
-          <div className='flex items-center justify-center mb-12 gap-5'>
+          <div className='flex items-center justify-center mb-12 gap-5 relative'>
             <h2 className='text-3xl font-bold text-center'>
               Client Testimonials
             </h2>
-            <button
-              className='flex items-center gap-2 hover:underline hover:text-primary'
-              type='button'
-              onClick={handleToggleTable}
-            >
-              {isTable ? (
-                <>
-                  <FaList className='size-3' />
-                  List
-                </>
-              ) : (
-                <>
-                  <FaTable className='size-3' />
-                  Table
-                </>
-              )}
-            </button>
-            <button onClick={handleAdd}>
-              <HiPencil className='size-6 rounded-full p-1 bg-accent text-white' />
-            </button>
+            <div className='absolute right-0 top-1/3'>
+              <div className='flex items-center gap-x-3'>
+                <button
+                  className='flex items-center gap-2 hover:underline hover:text-primary'
+                  type='button'
+                  onClick={handleToggleTable}
+                >
+                  {isTable ? (
+                    <>
+                      <FaList className='size-3' />
+                      List
+                    </>
+                  ) : (
+                    <>
+                      <FaTable className='size-3' />
+                      Table
+                    </>
+                  )}
+                </button>
+                <button
+                  className='flex items-center gap-2 hover:underline hover:text-primary'
+                  type='button'
+                  onClick={handleAdd}
+                >
+                  <FaPlus className='size-3' />
+                  Add
+                </button>
+              </div>
+            </div>
           </div>
 
           {isTable ? (
@@ -102,6 +111,7 @@ const Testimonials = () => {
         <ModalAddTestimonials
           setIsModal={setIsModalTestimonials}
           itemEdit={itemEdit}
+          setIsModalTestimonials={setIsModalTestimonials}
         />
       )}
 
@@ -110,6 +120,8 @@ const Testimonials = () => {
           setModalDelete={setIsDeleteTestimonials}
           mySqlEndpoint={`${apiVersion}/controllers/developer/testimonials/testimonials.php?id=${itemEdit.testimonial_aid}`}
           queryKey='testimonials'
+          setCurrentSlide={setCurrentSlide}
+          currentSlide={currentSlide}
         />
       )}
     </>

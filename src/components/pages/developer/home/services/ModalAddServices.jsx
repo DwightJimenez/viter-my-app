@@ -8,7 +8,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { InputText, InputTextArea } from "../../../../helpers/FormInput";
 
-const ModalAddServices = ({ setIsModal, itemEdit }) => {
+const ModalAddServices = ({ setIsModal, itemEdit, setIsModalServices }) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -77,6 +77,7 @@ const ModalAddServices = ({ setIsModal, itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               console.log(values);
               mutation.mutate(values);
+              setIsModalServices(false);
             }}
           >
             {(props) => {

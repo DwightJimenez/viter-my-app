@@ -7,6 +7,8 @@ const ModalDeleteTestimonials = ({
   setModalDelete,
   mySqlEndpoint,
   queryKey,
+  setCurrentSlide,
+  currentSlide
 }) => {
   const handleClose = () => {
     setModalDelete(false);
@@ -26,6 +28,7 @@ const ModalDeleteTestimonials = ({
   });
 
   const handleConfirm = () => {
+    setCurrentSlide(currentSlide - 1);
     mutation.mutate();
   };
   return (

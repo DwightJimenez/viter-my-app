@@ -20,7 +20,7 @@ class Header
         $this->connection = $db;
         $this->tblHeader = 'my_app_header';
     }
-      public function readAll()
+    public function readAll()
     {
         try {
             $sql = "select ";
@@ -62,23 +62,38 @@ class Header
         }
         return $query;
     }
-     public function update()
+    public function update()
     {
         try {
             $sql = "update {$this->tblHeader} set ";
-            $sql .= "header_name = :header_name, ";     
+            $sql .= "header_name = :header_name, ";
             $sql .= "header_link = :header_link, ";
             $sql .= "header_updated = :header_updated ";
             $sql .= "where header_aid = :header_aid";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "header_name" => $this->header_name,
-                "header_link" => $this->header_link, 
+                "header_link" => $this->header_link,
                 "header_updated" => $this->header_updated,
                 "header_aid" => $this->header_aid
             ]);
         } catch (PDOException $ex) {
             // returnError($ex);
+            $query = false;
+        }
+        return $query;
+    }
+    public function checkName()
+    {
+        try {
+            $sql = "select header_name from {$this->tblHeader} ";
+            $sql .= "where header_name = :header_name";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "header_name" => $this->header_name,
+            ]);
+        } catch (PDOException $ex) {
+            returnError($ex);
             $query = false;
         }
         return $query;

@@ -21,5 +21,8 @@ $webServices->web_services_text_url = $data['web_services_text_url'];
 $webServices->web_services_created = date('Y-m-d H:i:s');
 $webServices->web_services_updated = date('Y-m-d H:i:s');
 
+//validation
+isNameExist($webServices, $webServices->web_services_name);
+
 $query = checkCreate($webServices);
 returnSuccess($webServices, 'web services create', $query);

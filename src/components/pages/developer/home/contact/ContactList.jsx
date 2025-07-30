@@ -1,12 +1,13 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { InputText, InputTextArea } from "../../../../helpers/FormInput";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 import { queryData } from "../../../../custom-hooks/queryData";
 import { apiVersion } from "../../../../helpers/function-general";
 
 const ContactList = () => {
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
@@ -15,6 +16,8 @@ const ContactList = () => {
         values
       ),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["contact"] });
+
       if (!data.success) {
         window.prompt(data.error);
       } else {
@@ -27,11 +30,14 @@ const ContactList = () => {
     contact_fullname: "",
     contact_email: "",
     contact_message: "",
+    contact_old_email: "",
   };
 
   const yupSchema = Yup.object({
-    contact_fullname: Yup.string().required("required"),
-    contact_email: Yup.string().email().required("required"),
+    contact_fullname: Yup.string()
+      .min(3, "must be 3 character minimum")
+      .required("required"),
+    contact_email: Yup.string().email("Invalid Email").required("required"),
     contact_message: Yup.string().required("required"),
   });
   return (
@@ -41,7 +47,7 @@ const ContactList = () => {
         validationSchema={yupSchema}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           mutation.mutate(values);
-          if (Response.ok) {
+          if (window.confirm()) {
             resetForm();
           }
         }}

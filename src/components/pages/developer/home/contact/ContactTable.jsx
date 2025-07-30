@@ -2,10 +2,10 @@ import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 
-const ContactTable = ({ dataContact }) => {
+const ContactTable = ({ dataContact, handleDelete, handleEdit }) => {
   return (
     <>
-      <table className='h-fit'>
+      <table className='h-fit mt-10'>
         <thead>
           <tr>
             <th>#</th>

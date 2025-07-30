@@ -9,9 +9,24 @@ import { FaList, FaTable } from "react-icons/fa";
 import useQueryData from "../../../../custom-hooks/useQueryData";
 import ContactTable from "./ContactTable";
 import ContactList from "./ContactList";
+import ModalDeleteContact from "./ModalDeleteContact";
+import ModalAddContact from "./ModalAddContact";
 
 const Contact = () => {
   const [isTable, setIsTable] = React.useState(false);
+  const [itemEdit, setItemEdit] = React.useState();
+  const [isModalContact, setIsModalContact] = React.useState(false);
+  const [isDeleteContact, setIsDeleteContact] = React.useState(false);
+
+  const handleEdit = (item) => {
+    setItemEdit(item);
+    setIsModalContact(true);
+  };
+
+  const handleDelete = (item) => {
+    setItemEdit(item);
+    setIsDeleteContact(true);
+  };
 
   const {
     isLoading,
@@ -31,9 +46,10 @@ const Contact = () => {
   return (
     <>
       <section id='contact' className='bg-white py-12 md:py-20'>
-        <div className='container relative'>
+        <div className='container '>
           <h2 className='title text-center'>Get In Touch</h2>
-          <div className='absolute right-0 top-0'>
+          
+          <div className='flex flex-col gap-10 mt-12 md:flex-row relative'><div className='absolute right-0 top-0'>
             <button
               className='flex items-center gap-2 hover:underline hover:text-primary'
               type='button'
@@ -52,7 +68,6 @@ const Contact = () => {
               )}
             </button>
           </div>
-          <div className='flex flex-col gap-10 mt-12 md:flex-row'>
             <div className='bg-gray-50 rounded-xl p-8 h-fit md:w-1/2'>
               <h5>Our Office</h5>
               <ul className='flex gap-3 mt-6 mb-4'>
@@ -151,13 +166,32 @@ const Contact = () => {
               </ul>
             </div>
             {isTable ? (
-              <ContactTable dataContact={dataContact} />
+              <ContactTable
+                dataContact={dataContact}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+              />
             ) : (
               <ContactList />
             )}
           </div>
         </div>
       </section>
+      {isModalContact && (
+        <ModalAddContact
+          setIsModal={setIsModalContact}
+          itemEdit={itemEdit}
+          setIsModalContact={setIsModalContact}
+        />
+      )}
+
+      {isDeleteContact && (
+        <ModalDeleteContact
+          setModalDelete={setIsDeleteContact}
+          mySqlEndpoint={`${apiVersion}/controllers/developer/contact/contact.php?id=${itemEdit.contact_aid}`}
+          queryKey='contact'
+        />
+      )}
     </>
   );
 };

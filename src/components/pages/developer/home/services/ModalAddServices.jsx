@@ -46,6 +46,7 @@ const ModalAddServices = ({ setIsModal, itemEdit, setIsModalServices }) => {
     web_services_image: itemEdit ? itemEdit.web_services_image : "",
     web_services_link: itemEdit ? itemEdit.web_services_link : "",
     web_services_text_url: itemEdit ? itemEdit.web_services_text_url : "",
+    web_services_name_old: itemEdit ? itemEdit.web_services_name : "",
   };
 
   const yupSchema = Yup.object({

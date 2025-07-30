@@ -174,6 +174,32 @@ function checkReadAll($object)
     return $query;
 }
 
+function checkExistence($count, $msg = '')
+{
+    if ($count > 0) {
+        $response = new Response();
+        $error = [];
+        $response->setSuccess(false);
+        $error['error'] = $msg;
+        $response->setData($error);
+        $response->send();
+        exit;
+    }
+}
+
+function isNameExist($models, $name)
+{
+    $query = $models->checkName();
+    $count = $query->rowCount();
+    checkExistence($count, "{$name} already exist.");
+}
+
+function compareName($models, $name_old, $name)
+{
+    if (strtolower($name_old) != strtolower($name)) {
+        isNameExist($models, $name);
+    }
+}
 
 // $conn = 123;
 // $response = new Response();

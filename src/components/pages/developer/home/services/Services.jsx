@@ -8,6 +8,9 @@ import { FaPencil } from "react-icons/fa6";
 import ModalDeleteServices from "./ModalDeleteServices";
 import ServicesList from "./ServicesList";
 import ServicesTable from "./ServicesTable";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { queryDataInfinite } from "../../../../helpers/queryDataInfinite";
+import { useInView } from "react-intersection-observer";
 
 const Services = () => {
   const [isModalServices, setIsModalServices] = React.useState(false);
@@ -15,16 +18,45 @@ const Services = () => {
   const [itemEdit, setItemEdit] = React.useState();
   const [isTable, setIsTable] = React.useState(false);
 
+  const [page, setPage] = React.useState(1);
+  const { ref, Inview } = useInView();
+
   const {
     isLoading,
-    isFetching,
-    error,
+    isFetching: isFetchingDataServices,
+    error: errorDataServices,
     data: dataServices,
   } = useQueryData(
     `${apiVersion}/controllers/developer/web-services/web-services.php`,
     "get",
     "web-services"
   );
+
+  const {
+    data: result,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["web-services"],
+    queryFn: async ({ pageParam = 1 }) =>
+      await queryDataInfinite(
+        "",
+        `${apiVersion}/controllers/developer/web-services/page.php?start=${pageParam}`,
+        false,
+        {},
+        "post"
+      ),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total) {
+        return lastPage.page + lastPage.count;
+      }
+      return;
+    },
+  });
   const handleAdd = () => {
     setIsModalServices(true);
     setItemEdit(null);
@@ -42,6 +74,15 @@ const Services = () => {
   const handleToggleTable = () => {
     setIsTable(!isTable);
   };
+
+  React.useEffect(() => {
+    if (Inview) {
+      fetchNextPage();
+      setPage((prev) => {
+        prev + 1;
+      });
+    }
+  }, [Inview]);
 
   return (
     <>
@@ -89,28 +130,48 @@ const Services = () => {
             <ServicesTable
               isLoading={isLoading}
               isFetching={isFetching}
-              error={error}
               dataServices={dataServices}
               handleAdd={handleAdd}
               handleDelete={handleDelete}
               handleEdit={handleEdit}
+              result={result}
+              error={error}
+              fetchNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              status={status}
+              setPage={setPage}
+              page={page}
+              ref={ref}
             />
           ) : (
             <ServicesList
               isLoading={isLoading}
               isFetching={isFetching}
-              error={error}
               dataServices={dataServices}
               handleAdd={handleAdd}
               handleDelete={handleDelete}
               handleEdit={handleEdit}
+              result={result}
+              error={error}
+              fetchNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              status={status}
+              setPage={setPage}
+              page={page}
+              ref={ref}
             />
           )}
         </div>
       </section>
 
       {isModalServices && (
-        <ModalAddServices setIsModal={setIsModalServices} itemEdit={itemEdit} setIsModalServices={setIsModalServices}/>
+        <ModalAddServices
+          setIsModal={setIsModalServices}
+          itemEdit={itemEdit}
+          setIsModalServices={setIsModalServices}
+        />
       )}
       {isDeleteServices && (
         <ModalDeleteServices
